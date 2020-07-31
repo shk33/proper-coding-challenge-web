@@ -1,4 +1,6 @@
-# proper-challenge-project
+# Proper Coding Challenge
+
+To see the instructions, make sure you can run the page locally and you'll find them at [localhost:8080](localhost:8080)
 
 ## Project setup
 ```
@@ -8,11 +10,6 @@ npm install
 ### Compiles and hot-reloads for development
 ```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
 ```
 
 ### Lints and fixes files
