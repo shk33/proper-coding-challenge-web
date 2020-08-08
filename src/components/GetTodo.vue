@@ -3,7 +3,7 @@
         <input class="form-control"
                :value="newTodo"
                @change="getTodo"
-               placeholder="I need to...">
+               placeholder="Add your new TODO here...">
         <button class="btn btn-primary" @click="addTodo">Add Todo</button>
     </div>
 </template>
