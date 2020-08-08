@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-
+        <GetTodo></GetTodo>
         <h1>Instructions</h1>
 
         <p>
@@ -36,10 +36,14 @@
 
 <script>
 import { Vue, Component } from "vue-property-decorator";
+import GetTodo from "../components/GetTodo.vue";
 
-@Component
+@Component({
+    components: {
+        GetTodo,
+    },
+})
 export default class HomeView extends Vue {
-
 }
 </script>
 

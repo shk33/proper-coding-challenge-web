@@ -8,21 +8,22 @@
     </div>
 </template>
 
-<script>
-export default {
-    methods: {
-        getTodo(e) {
-            this.$store.dispatch("getTodo", e.target.value);
-        },
-        addTodo() {
-            this.$store.dispatch("addTodo");
-            this.$store.dispatch("clearTodo");
-        },
-    },
-    computed: {
-        newTodo() {
-            return this.$store.getters.newTodo;
-        },
-    },
-};
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class GetTodo extends Vue {
+    public getTodo(e) {
+        this.$store.dispatch("getTodo", e.target.value);
+    }
+
+    public addTodo() {
+        this.$store.dispatch("addTodo");
+        this.$store.dispatch("clearTodo");
+    }
+
+    get newTodo() {
+        return this.$store.getters.newTodo;
+    }
+}
 </script>
