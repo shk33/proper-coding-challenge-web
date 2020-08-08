@@ -1,6 +1,7 @@
 <template>
     <div class="home">
         <div class="container">
+            <CompletedTodos></CompletedTodos>
             <GetTodo></GetTodo>
             <CurrentTodos></CurrentTodos>
         </div>
@@ -41,11 +42,13 @@
 import { Vue, Component } from "vue-property-decorator";
 import GetTodo from "../components/GetTodo.vue";
 import CurrentTodos from "../components/CurrentTodos.vue";
+import CompletedTodos from "../components/CompletedTodos.vue";
 
 @Component({
     components: {
         GetTodo,
         CurrentTodos,
+        CompletedTodos,
     },
 })
 export default class HomeView extends Vue {
