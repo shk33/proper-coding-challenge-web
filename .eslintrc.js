@@ -19,6 +19,6 @@ module.exports = {
         semi: ["error", "always"],
         "comma-dangle": ["error", "always-multiline"],
         "space-before-function-paren": ["error", "never"],
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+        "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     },
 };

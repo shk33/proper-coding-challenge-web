@@ -4,24 +4,70 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 interface Todo {
-    id: String,
-    title: String,
-    completed: boolean
+    id: string;
+    title: string;
+    completed: boolean;
 }
 
 interface State {
     foo: boolean;
-    todos: Array<Todo>,
-    newTodo: String
+    todos: Array<Todo>;
+    newTodo: string;
 }
 
 export default new Vuex.Store<State>({
     state: {
         foo: true,
         todos: [],
-        newTodo: ''
+        newTodo: "",
     },
-    mutations: {},
-    actions: {},
+    mutations: {
+        GET_TODO(state, todo) {
+            state.newTodo = todo;
+        },
+        ADD_TODO(state) {
+            state.todos.push({
+                id: "Fixed",
+                title: state.newTodo,
+                completed: false,
+            });
+        },
+        EDIT_TODO(state, todo) {
+            const todos = state.todos;
+            todos.splice(todos.indexOf(todo), 1);
+            state.todos = todos;
+            state.newTodo = todo.body;
+        },
+        REMOVE_TODO(state, todo) {
+            const todos = state.todos;
+            todos.splice(todos.indexOf(todo), 1);
+        },
+        COMPLETE_TODO(state, todo) {
+            todo.completed = !todo.completed;
+        },
+        CLEAR_TODO(state) {
+            state.newTodo = "";
+        },
+    },
+    actions: {
+        getTodo({ commit }, todo) {
+            commit("GET_TODO", todo);
+        },
+        addTodo({ commit }) {
+            commit("ADD_TODO");
+        },
+        editTodo({ commit }, todo) {
+            commit("EDIT_TODO", todo);
+        },
+        removeTodo({ commit }, todo) {
+            commit("REMOVE_TODO", todo);
+        },
+        completeTodo({ commit }, todo) {
+            commit("COMPLETE_TODO", todo);
+        },
+        clearTodo({ commit }) {
+            commit("CLEAR_TODO");
+        },
+    },
     modules: {},
 });
