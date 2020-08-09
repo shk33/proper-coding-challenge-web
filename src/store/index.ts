@@ -33,11 +33,12 @@ export default new Vuex.Store<State>({
             TodoService.saveTodosToLocalStorage(state.todos);
         },
         EDIT_TODO(state, todo) {
-            const todos = state.todos;
-            todos.splice(todos.indexOf(todo), 1);
-            state.todos = todos;
-            state.newTodo = todo.title;
-            TodoService.saveTodosToLocalStorage(state.todos);
+            const { todos } = state;
+            const indexToUpdate = todos.findIndex(t => t.id === todo.id);
+            if (indexToUpdate >= 0) {
+                Vue.set(todos, indexToUpdate, todo);
+                TodoService.saveTodosToLocalStorage(state.todos);
+            }
         },
         REMOVE_TODO(state, todoId) {
             const { todos } = state;
@@ -90,8 +91,11 @@ export default new Vuex.Store<State>({
             commit("ADD_TODO", newTodo);
             commit("COMPLETED_TASK");
         },
-        editTodo({ commit }, todo) {
+        async editTodo({ commit }, todo) {
+            commit("LOADING_TASK");
+            await TodoService.editTodo(todo);
             commit("EDIT_TODO", todo);
+            commit("COMPLETED_TASK");
         },
         async removeTodo({ commit }, todo) {
             commit("LOADING_TASK");

@@ -39,6 +39,13 @@ export default class TodoService {
         return { ...newTodo, id: nanoid() };
     }
 
+    static async editTodo(todo: Todo) {
+        await axios.patch(`${TODO_API_URL}/${todo.id}`, {
+            title: todo.title,
+            completed: todo.completed,
+        });
+    }
+
     static async removeTodo(todo: Todo) {
         await axios.delete(`${TODO_API_URL}/${todo.id}`);
     }

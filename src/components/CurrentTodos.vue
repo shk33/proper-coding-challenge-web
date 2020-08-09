@@ -11,9 +11,22 @@
         </div>
         <ul class="list-group">
             <li class="list-group-item" v-for="todo in todos" :key="todo.id">
-                {{todo.title}}
-                <div class="btn-group">
-                    <button type="button" @click="edit(todo)" class="btn btn-primary btn-sm">
+                <span v-show="editingTodoId !== todo.id || !isEditing" >{{todo.title}}</span>
+                <div v-show="editingTodoId === todo.id" class="input-group input-group-sm mb-3">
+                    <input
+                        v-model="newText"
+                        type="text"
+                        class="form-control"
+                        aria-label="Small"
+                        aria-describedby="inputGroup-sizing-sm"
+                    >
+                     <div class="input-group-append">
+                        <button @click="edit(todo)" class="btn btn-outline-success" type="button">Modify</button>
+                        <button @click="cancelEdit" class="btn btn-outline-danger" type="button">Cancel</button>
+                    </div>
+                </div>
+                <div class="btn-group" v-show="editingTodoId !== todo.id || !isEditing">
+                    <button type="button" @click="showEditForm(todo)" class="btn btn-primary btn-sm">
                         <span class="glyphicon glyphicon-edit"></span> Edit
                     </button>
                     <button type="button" @click="complete(todo)" class="btn btn-success btn-sm">
@@ -41,8 +54,33 @@ export default class CurrentTodos extends Vue {
     @Action("completeTodo") completeTodoAction: any
     @Action("removeTodo") removeTodoAction: any
 
+    private isEditing = false;
+    private editingTodoId = "";
+    private newText = "";
+
+    public showEditForm(todo: Todo) {
+        this.isEditing = true;
+        this.editingTodoId = todo.id;
+        this.newText = todo.title;
+    }
+
+    public cancelEdit() {
+        this.isEditing = false;
+        this.editingTodoId = "";
+        this.newText = "";
+    }
+
     public edit(todo: Todo) {
-        this.editTodoAction(todo);
+        if (this.newText) {
+            this.editTodoAction({
+                id: todo.id,
+                title: this.newText,
+                completed: false,
+            });
+            this.isEditing = false;
+            this.editingTodoId = "";
+            this.newText = "";
+        }
     }
 
     public complete(todo: Todo) {
