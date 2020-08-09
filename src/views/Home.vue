@@ -1,9 +1,19 @@
 <template>
     <div class="home">
         <div class="container">
-            <CompletedTodos></CompletedTodos>
-            <GetTodo></GetTodo>
-            <CurrentTodos></CurrentTodos>
+            <div class="row">
+                <div class="col-sm-12">
+                    <GetTodo></GetTodo>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <CurrentTodos></CurrentTodos>
+                </div>
+                <div class="col-sm-6">
+                    <CompletedTodos></CompletedTodos>
+                </div>
+            </div>
         </div>
         <h1>Instructions</h1>
 
