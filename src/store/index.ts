@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import TodoService from "../services/todo-service";
 import { Todo } from "../interfaces/todo";
 import { nanoid } from "nanoid";
 
@@ -11,8 +11,6 @@ interface State {
     todos: Array<Todo>;
     newTodo: string;
 }
-
-const TODO_API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 export default new Vuex.Store<State>({
     state: {
@@ -64,16 +62,7 @@ export default new Vuex.Store<State>({
     actions: {
         async getNewTodos({ commit }) {
             commit("LOADING_TASK");
-            const response = await axios.get(TODO_API_URL, {
-                params: {
-                    _limit: 20,
-                },
-            });
-            const newTodos = response.data.map((t: Todo) => ({
-                id: t.id,
-                title: t.title,
-                completed: false,
-            }));
+            const newTodos = await TodoService.getNewTodos();
             commit("ADD_NEW_TODOS", newTodos);
             commit("COMPLETED_TASK");
         },
@@ -82,12 +71,12 @@ export default new Vuex.Store<State>({
         },
         async addTodo({ commit, state }) {
             commit("LOADING_TASK");
-            const response = await axios.post(TODO_API_URL, {
+            const newTodo = await TodoService.addTodo({
+                id: nanoid(),
                 title: state.newTodo,
                 completed: false,
             });
-            const newTodo = response.data;
-            commit("ADD_TODO", { ...newTodo, id: nanoid() });
+            commit("ADD_TODO", newTodo);
             commit("COMPLETED_TASK");
         },
         editTodo({ commit }, todo) {
@@ -95,15 +84,13 @@ export default new Vuex.Store<State>({
         },
         async removeTodo({ commit }, todo) {
             commit("LOADING_TASK");
-            await axios.delete(`${TODO_API_URL}/${todo.id}`);
+            await TodoService.removeTodo(todo);
             commit("REMOVE_TODO", todo.id);
             commit("COMPLETED_TASK");
         },
         async completeTodo({ commit }, todo) {
             commit("LOADING_TASK");
-            await axios.patch(`${TODO_API_URL}/${todo.id}`, {
-                completed: true,
-            });
+            await TodoService.completeTodo(todo);
             commit("COMPLETE_TODO", todo.id);
             commit("COMPLETED_TASK");
         },
