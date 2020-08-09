@@ -14,13 +14,13 @@
                 {{todo.title}}
                 <div class="btn-group">
                     <button type="button" @click="edit(todo)" class="btn btn-primary btn-sm">
-                    <span class="glyphicon glyphicon-edit"></span> Edit
+                        <span class="glyphicon glyphicon-edit"></span> Edit
                     </button>
                     <button type="button" @click="complete(todo)" class="btn btn-success btn-sm">
-                    <span class="glyphicon glyphicon-ok-circle"></span> Complete
+                        <span class="glyphicon glyphicon-ok-circle"></span> Complete
                     </button>
                     <button type="button" @click="remove(todo)" class="btn btn-danger btn-sm">
-                    <span class="glyphicon glyphicon-remove-circle"></span> Remove
+                        <span class="glyphicon glyphicon-remove-circle"></span> Remove
                     </button>
                 </div>
             </li>
