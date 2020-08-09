@@ -15,10 +15,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Todo } from "../interfaces/todo";
 
 @Component
 export default class CompletedTodos extends Vue {
-    public remove(todo) {
+    public remove(todo: Todo) {
         this.$store.dispatch("removeTodo", todo);
     }
 

@@ -30,18 +30,19 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Todo } from "../interfaces/todo";
 
 @Component
 export default class CurrentTodos extends Vue {
-    public edit(todo) {
+    public edit(todo: Todo) {
         this.$store.dispatch("editTodo", todo);
     }
 
-    public complete(todo) {
+    public complete(todo: Todo) {
         this.$store.dispatch("completeTodo", todo);
     }
 
-    public remove(todo) {
+    public remove(todo: Todo) {
         this.$store.dispatch("removeTodo", todo);
     }
 

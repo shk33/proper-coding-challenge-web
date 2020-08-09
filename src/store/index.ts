@@ -1,14 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import { Todo } from "../interfaces/todo";
 
 Vue.use(Vuex);
-
-interface Todo {
-    id: string;
-    title: string;
-    completed: boolean;
-}
 
 interface State {
     loading: boolean;
@@ -73,7 +68,7 @@ export default new Vuex.Store<State>({
                     _limit: 20,
                 },
             });
-            const newTodos = response.data.map(t => ({
+            const newTodos = response.data.map((t: Todo) => ({
                 id: t.id,
                 title: t.title,
                 completed: false,
