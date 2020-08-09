@@ -7,6 +7,14 @@
                 </div>
             </div>
             <div class="row">
+                <div v-show="isLoading" class="col-sm-12">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-sm-6">
                     <CurrentTodos></CurrentTodos>
                 </div>
@@ -15,6 +23,7 @@
                 </div>
             </div>
         </div>
+
         <h1>Instructions</h1>
 
         <p>
@@ -50,6 +59,7 @@
 
 <script>
 import { Vue, Component } from "vue-property-decorator";
+import { State } from "vuex-class";
 import GetTodo from "../components/GetTodo.vue";
 import CurrentTodos from "../components/CurrentTodos.vue";
 import CompletedTodos from "../components/CompletedTodos.vue";
@@ -62,6 +72,7 @@ import CompletedTodos from "../components/CompletedTodos.vue";
     },
 })
 export default class HomeView extends Vue {
+    @State(state => state.loading) isLoading
 }
 </script>
 

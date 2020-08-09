@@ -11,7 +11,7 @@ interface Todo {
 }
 
 interface State {
-    foo: boolean;
+    loading: boolean;
     todos: Array<Todo>;
     newTodo: string;
 }
@@ -20,11 +20,17 @@ const TODO_API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 export default new Vuex.Store<State>({
     state: {
-        foo: true,
+        loading: false,
         todos: [],
         newTodo: "",
     },
     mutations: {
+        LOADING_TASK(state) {
+            state.loading = true;
+        },
+        COMPLETED_TASK(state) {
+            state.loading = false;
+        },
         GET_TODO(state, todo) {
             state.newTodo = todo;
         },
@@ -61,6 +67,7 @@ export default new Vuex.Store<State>({
     },
     actions: {
         async getNewTodos({ commit }) {
+            commit("LOADING_TASK");
             const response = await axios.get(TODO_API_URL, {
                 params: {
                     _limit: 20,
@@ -72,31 +79,38 @@ export default new Vuex.Store<State>({
                 completed: false,
             }));
             commit("ADD_NEW_TODOS", newTodos);
+            commit("COMPLETED_TASK");
         },
         getTodo({ commit }, todo) {
             commit("GET_TODO", todo);
         },
         async addTodo({ commit, state }) {
+            commit("LOADING_TASK");
             const response = await axios.post(TODO_API_URL, {
                 title: state.newTodo,
                 completed: false,
             });
             const newTodo = response.data;
             commit("ADD_TODO", newTodo);
+            commit("COMPLETED_TASK");
         },
         editTodo({ commit }, todo) {
             commit("EDIT_TODO", todo);
         },
         async removeTodo({ commit }, todo) {
+            commit("LOADING_TASK");
             await axios.delete(`${TODO_API_URL}/${todo.id}`);
             commit("REMOVE_TODO", todo.id);
+            commit("COMPLETED_TASK");
         },
         async completeTodo({ commit }, todo) {
+            commit("LOADING_TASK");
             const response = await axios.patch(`${TODO_API_URL}/${todo.id}`, {
                 completed: true,
             });
             const completedTodo = response.data;
             commit("COMPLETE_TODO", completedTodo.id);
+            commit("COMPLETED_TASK");
         },
         clearTodo({ commit }) {
             commit("CLEAR_TODO");
