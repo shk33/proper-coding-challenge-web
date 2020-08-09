@@ -3,8 +3,18 @@ import { Todo } from "../interfaces/todo";
 import { nanoid } from "nanoid";
 
 const TODO_API_URL = "https://jsonplaceholder.typicode.com/todos";
+const TODO_LOCAL_STORAGE_KEY = "todos";
 
 export default class TodoService {
+    static getTodosFromLocalStorage() {
+        const todos = JSON.parse(localStorage.getItem(TODO_LOCAL_STORAGE_KEY) || "[]");
+        return todos;
+    }
+
+    static saveTodosToLocalStorage(todos: Array<Todo>) {
+        localStorage.setItem(TODO_LOCAL_STORAGE_KEY, JSON.stringify(todos));
+    }
+
     static async getNewTodos() {
         const response = await axios.get(TODO_API_URL, {
             params: {

@@ -9,5 +9,6 @@ Vue.config.productionTip = false;
 new Vue({
     router,
     store,
+    beforeCreate() { this.$store.dispatch("initStore"); },
     render: h => h(App),
 }).$mount("#app");

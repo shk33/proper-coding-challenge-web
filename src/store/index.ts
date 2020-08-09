@@ -30,18 +30,21 @@ export default new Vuex.Store<State>({
         },
         ADD_TODO(state, todo) {
             state.todos.push(todo);
+            TodoService.saveTodosToLocalStorage(state.todos);
         },
         EDIT_TODO(state, todo) {
             const todos = state.todos;
             todos.splice(todos.indexOf(todo), 1);
             state.todos = todos;
             state.newTodo = todo.title;
+            TodoService.saveTodosToLocalStorage(state.todos);
         },
         REMOVE_TODO(state, todoId) {
             const { todos } = state;
             const indexToRemove = todos.findIndex(t => t.id === todoId);
             if (indexToRemove >= 0) {
                 todos.splice(indexToRemove, 1);
+                TodoService.saveTodosToLocalStorage(state.todos);
             }
         },
         COMPLETE_TODO(state, todoId) {
@@ -50,6 +53,7 @@ export default new Vuex.Store<State>({
 
             if (todoToComplete) {
                 todoToComplete.completed = true;
+                TodoService.saveTodosToLocalStorage(state.todos);
             }
         },
         CLEAR_TODO(state) {
@@ -57,9 +61,16 @@ export default new Vuex.Store<State>({
         },
         ADD_NEW_TODOS(state, todos) {
             state.todos.push(...todos);
+            TodoService.saveTodosToLocalStorage(state.todos);
         },
     },
     actions: {
+        initStore({ commit }) {
+            const todos = TodoService.getTodosFromLocalStorage();
+            if (todos) {
+                commit("ADD_NEW_TODOS", todos);
+            }
+        },
         async getNewTodos({ commit }) {
             commit("LOADING_TASK");
             const newTodos = await TodoService.getNewTodos();
