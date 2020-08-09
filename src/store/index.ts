@@ -66,38 +66,58 @@ export default new Vuex.Store<State>({
             }
         },
         async getNewTodos({ commit }) {
-            commit("LOADING_TASK");
-            const newTodos = await TodoService.getNewTodos();
-            commit("ADD_NEW_TODOS", newTodos);
-            commit("COMPLETED_TASK");
+            try {
+                commit("LOADING_TASK");
+                const newTodos = await TodoService.getNewTodos();
+                commit("ADD_NEW_TODOS", newTodos);
+                commit("COMPLETED_TASK");
+            } catch (error) {
+                commit("COMPLETED_TASK");
+            }
         },
         async addTodo({ commit }, title) {
-            commit("LOADING_TASK");
-            const newTodo = await TodoService.addTodo({
-                id: nanoid(),
-                title: title,
-                completed: false,
-            });
-            commit("ADD_TODO", newTodo);
-            commit("COMPLETED_TASK");
+            try {
+                commit("LOADING_TASK");
+                const newTodo = await TodoService.addTodo({
+                    id: nanoid(),
+                    title: title,
+                    completed: false,
+                });
+                commit("ADD_TODO", newTodo);
+                commit("COMPLETED_TASK");
+            } catch (error) {
+                commit("COMPLETED_TASK");
+            }
         },
         async editTodo({ commit }, todo) {
-            commit("LOADING_TASK");
-            await TodoService.editTodo(todo);
-            commit("EDIT_TODO", todo);
-            commit("COMPLETED_TASK");
+            try {
+                commit("LOADING_TASK");
+                await TodoService.editTodo(todo);
+                commit("EDIT_TODO", todo);
+                commit("COMPLETED_TASK");
+            } catch (error) {
+                commit("COMPLETED_TASK");
+            }
         },
         async removeTodo({ commit }, todo) {
-            commit("LOADING_TASK");
-            await TodoService.removeTodo(todo);
-            commit("REMOVE_TODO", todo.id);
-            commit("COMPLETED_TASK");
+            try {
+                commit("LOADING_TASK");
+                await TodoService.removeTodo(todo);
+                commit("REMOVE_TODO", todo.id);
+                commit("COMPLETED_TASK");
+            } catch (error) {
+                commit("COMPLETED_TASK");
+            }
         },
         async completeTodo({ commit }, todo) {
-            commit("LOADING_TASK");
-            await TodoService.completeTodo(todo);
-            commit("COMPLETE_TODO", todo.id);
-            commit("COMPLETED_TASK");
+            try {
+                commit("LOADING_TASK");
+                await TodoService.completeTodo(todo);
+                commit("COMPLETE_TODO", todo.id);
+                commit("COMPLETED_TASK");
+            } catch (error) {
+                commit("COMPLETED_TASK");
+            }
         },
         clearTodo({ commit }) {
             commit("CLEAR_TODO");
