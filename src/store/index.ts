@@ -28,12 +28,8 @@ export default new Vuex.Store<State>({
         GET_TODO(state, todo) {
             state.newTodo = todo;
         },
-        ADD_TODO(state) {
-            state.todos.push({
-                id: "Fixed",
-                title: state.newTodo,
-                completed: false,
-            });
+        ADD_TODO(state, todo) {
+            state.todos.push(todo);
         },
         EDIT_TODO(state, todo) {
             const todos = state.todos;
@@ -72,8 +68,13 @@ export default new Vuex.Store<State>({
         getTodo({ commit }, todo) {
             commit("GET_TODO", todo);
         },
-        addTodo({ commit }) {
-            commit("ADD_TODO");
+        async addTodo({ commit, state }) {
+            const response = await axios.post(TODO_API_URL, {
+                title: state.newTodo,
+                completed: false,
+            });
+            const newTodo = response.data;
+            commit("ADD_TODO", newTodo);
         },
         editTodo({ commit }, todo) {
             commit("EDIT_TODO", todo);

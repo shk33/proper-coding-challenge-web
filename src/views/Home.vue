@@ -67,7 +67,6 @@ export default class HomeView extends Vue {
 
 <style scoped>
 .home {
-    max-width: 600px;
     line-height: 150%;
 }
 </style>
