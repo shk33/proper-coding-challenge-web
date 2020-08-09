@@ -13,13 +13,13 @@
             <li class="list-group-item" v-for="todo in todos" :key="todo.id">
                 {{todo.title}}
                 <div class="btn-group">
-                    <button type="button" @click="edit(todo)" class="btn btn-default btn-sm">
+                    <button type="button" @click="edit(todo)" class="btn btn-primary btn-sm">
                     <span class="glyphicon glyphicon-edit"></span> Edit
                     </button>
-                    <button type="button" @click="complete(todo)" class="btn btn-default btn-sm">
+                    <button type="button" @click="complete(todo)" class="btn btn-success btn-sm">
                     <span class="glyphicon glyphicon-ok-circle"></span> Complete
                     </button>
-                    <button type="button" @click="remove(todo)" class="btn btn-default btn-sm">
+                    <button type="button" @click="remove(todo)" class="btn btn-danger btn-sm">
                     <span class="glyphicon glyphicon-remove-circle"></span> Remove
                     </button>
                 </div>
@@ -31,27 +31,30 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Todo } from "../interfaces/todo";
+import { Getter, Action } from "vuex-class";
 
 @Component
 export default class CurrentTodos extends Vue {
+    @Getter("todos") todos!: Array<Todo>
+    @Action("getNewTodos") getNewTodosAction: any
+    @Action("editTodo") editTodoAction: any
+    @Action("completeTodo") completeTodoAction: any
+    @Action("removeTodo") removeTodoAction: any
+
     public edit(todo: Todo) {
-        this.$store.dispatch("editTodo", todo);
+        this.editTodoAction(todo);
     }
 
     public complete(todo: Todo) {
-        this.$store.dispatch("completeTodo", todo);
+        this.completeTodoAction(todo);
     }
 
     public remove(todo: Todo) {
-        this.$store.dispatch("removeTodo", todo);
+        this.removeTodoAction(todo);
     }
 
     public generateTodos() {
-        this.$store.dispatch("getNewTodos");
-    }
-
-    get todos() {
-        return this.$store.getters.todos;
+        this.getNewTodosAction();
     }
 }
 </script>

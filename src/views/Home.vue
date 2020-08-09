@@ -1,5 +1,8 @@
 <template>
     <div class="home">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand">My Todos</a>
+        </nav>
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">

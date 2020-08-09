@@ -10,16 +10,24 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { State, Action } from "vuex-class";
 
 @Component
 export default class GetTodo extends Vue {
-    public getTodo(e) {
-        this.$store.dispatch("getTodo", e.target.value);
+    @State(state => state.newTodo) newTodoText!: string
+    @Action("addTodo") addTodoAction: any
+    @Action("getTodo") getTodoAction: any
+    @Action("clearTodo") clearTodoAction: any
+
+    public getTodo(e: Event) {
+        this.getTodoAction(e.target.value);
     }
 
     public addTodo() {
-        this.$store.dispatch("addTodo");
-        this.$store.dispatch("clearTodo");
+        if (this.newTodoText) {
+            this.addTodoAction();
+            this.clearTodoAction();
+        }
     }
 
     get newTodo() {
