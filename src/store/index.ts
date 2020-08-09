@@ -37,9 +37,12 @@ export default new Vuex.Store<State>({
             state.todos = todos;
             state.newTodo = todo.title;
         },
-        REMOVE_TODO(state, todo) {
-            const todos = state.todos;
-            todos.splice(todos.indexOf(todo), 1);
+        REMOVE_TODO(state, todoId) {
+            const { todos } = state;
+            const indexToRemove = todos.findIndex(t => t.id === todoId);
+            if (indexToRemove >= 0) {
+                todos.splice(indexToRemove, 1);
+            }
         },
         COMPLETE_TODO(state, todoId) {
             const { todos } = state;
@@ -84,8 +87,9 @@ export default new Vuex.Store<State>({
         editTodo({ commit }, todo) {
             commit("EDIT_TODO", todo);
         },
-        removeTodo({ commit }, todo) {
-            commit("REMOVE_TODO", todo);
+        async removeTodo({ commit }, todo) {
+            await axios.delete(`${TODO_API_URL}/${todo.id}`);
+            commit("REMOVE_TODO", todo.id);
         },
         async completeTodo({ commit }, todo) {
             const response = await axios.patch(`${TODO_API_URL}/${todo.id}`, {
