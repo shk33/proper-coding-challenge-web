@@ -29,7 +29,8 @@ export default new Vuex.Store<State>({
             state.newTodo = todo;
         },
         ADD_TODO(state, todo) {
-            state.todos.push(todo);
+            const { todos } = state;
+            state.todos = [todo, ...todos];
             TodoService.saveTodosToLocalStorage(state.todos);
         },
         EDIT_TODO(state, todo) {
