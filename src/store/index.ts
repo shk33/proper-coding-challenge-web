@@ -41,8 +41,13 @@ export default new Vuex.Store<State>({
             const todos = state.todos;
             todos.splice(todos.indexOf(todo), 1);
         },
-        COMPLETE_TODO(state, todo) {
-            todo.completed = !todo.completed;
+        COMPLETE_TODO(state, todoId) {
+            const { todos } = state;
+            const todoToComplete = todos.find(t => t.id === todoId);
+
+            if (todoToComplete) {
+                todoToComplete.completed = true;
+            }
         },
         CLEAR_TODO(state) {
             state.newTodo = "";
@@ -82,8 +87,12 @@ export default new Vuex.Store<State>({
         removeTodo({ commit }, todo) {
             commit("REMOVE_TODO", todo);
         },
-        completeTodo({ commit }, todo) {
-            commit("COMPLETE_TODO", todo);
+        async completeTodo({ commit }, todo) {
+            const response = await axios.patch(`${TODO_API_URL}/${todo.id}`, {
+                completed: true,
+            });
+            const completedTodo = response.data;
+            commit("COMPLETE_TODO", completedTodo.id);
         },
         clearTodo({ commit }) {
             commit("CLEAR_TODO");
