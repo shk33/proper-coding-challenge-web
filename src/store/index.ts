@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { Todo } from "../interfaces/todo";
+import { nanoid } from "nanoid";
 
 Vue.use(Vuex);
 
@@ -86,7 +87,7 @@ export default new Vuex.Store<State>({
                 completed: false,
             });
             const newTodo = response.data;
-            commit("ADD_TODO", newTodo);
+            commit("ADD_TODO", { ...newTodo, id: nanoid() });
             commit("COMPLETED_TASK");
         },
         editTodo({ commit }, todo) {
@@ -100,11 +101,10 @@ export default new Vuex.Store<State>({
         },
         async completeTodo({ commit }, todo) {
             commit("LOADING_TASK");
-            const response = await axios.patch(`${TODO_API_URL}/${todo.id}`, {
+            await axios.patch(`${TODO_API_URL}/${todo.id}`, {
                 completed: true,
             });
-            const completedTodo = response.data;
-            commit("COMPLETE_TODO", completedTodo.id);
+            commit("COMPLETE_TODO", todo.id);
             commit("COMPLETED_TASK");
         },
         clearTodo({ commit }) {
