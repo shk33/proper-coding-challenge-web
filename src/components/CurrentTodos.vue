@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts">
+import { ActionMethod } from "vuex";
 import { Component, Vue } from "vue-property-decorator";
 import { Todo } from "../interfaces/todo";
 import { Getter, Action } from "vuex-class";
@@ -49,10 +50,10 @@ import { Getter, Action } from "vuex-class";
 @Component
 export default class CurrentTodos extends Vue {
     @Getter("todos") todos!: Array<Todo>
-    @Action("getNewTodos") getNewTodosAction: any
-    @Action("editTodo") editTodoAction: any
-    @Action("completeTodo") completeTodoAction: any
-    @Action("removeTodo") removeTodoAction: any
+    @Action("getNewTodos") getNewTodosAction!: ActionMethod
+    @Action("editTodo") editTodoAction!: ActionMethod
+    @Action("completeTodo") completeTodoAction!: ActionMethod
+    @Action("removeTodo") removeTodoAction!: ActionMethod
 
     private isEditing = false;
     private editingTodoId = "";

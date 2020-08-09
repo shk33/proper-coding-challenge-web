@@ -8,13 +8,14 @@
 </template>
 
 <script lang="ts">
+import { ActionMethod } from "vuex";
 import { Component, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
 
 @Component
 export default class AddTodo extends Vue {
-    @Action("addTodo") addTodoAction: any
-    @Action("clearTodo") clearTodoAction: any
+    @Action("addTodo") addTodoAction!: ActionMethod
+    @Action("clearTodo") clearTodoAction!: ActionMethod
 
     private title = "";
 

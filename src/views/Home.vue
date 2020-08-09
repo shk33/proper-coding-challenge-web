@@ -9,6 +9,7 @@
                     <AddTodo></AddTodo>
                 </div>
             </div>
+            <div class="border-top my-3"></div>
             <div class="row">
                 <div v-show="isLoading" class="col-sm-12">
                     <div class="d-flex justify-content-center">

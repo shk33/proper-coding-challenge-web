@@ -14,6 +14,7 @@
 </template>
 
 <script lang="ts">
+import { ActionMethod } from "vuex";
 import { Component, Vue } from "vue-property-decorator";
 import { Todo } from "../interfaces/todo";
 import { Getter, Action } from "vuex-class";
@@ -21,7 +22,7 @@ import { Getter, Action } from "vuex-class";
 @Component
 export default class CompletedTodos extends Vue {
     @Getter("completedTodos") completedTodos!: Array<Todo>
-    @Action("removeTodo") removeTodoAction: any
+    @Action("removeTodo") removeTodoAction!: ActionMethod
 
     public remove(todo: Todo) {
         this.removeTodoAction(todo);
