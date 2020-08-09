@@ -1,7 +1,14 @@
 <template>
     <div id="current-todos" class="container">
         <h3 v-if="todos.length > 0">Current({{todos.length}})</h3>
-        <h3 v-else>There are no TODOS in your list yet</h3>
+        <div v-else>
+            <h3>There are no TODOS in your list yet</h3>
+            <p>What if I just generate a bunch of new tasks for you?</p>
+            <p>Like the idea? Yeah. Just push the button</p>
+            <button type="button" @click="generateTodos()" class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-ok-circle"></span> Give me some tasks to do
+            </button>
+        </div>
         <ul class="list-group">
             <li class="list-group-item" v-for="todo in todos" :key="todo.id">
                 {{todo.title}}
@@ -36,6 +43,10 @@ export default class CurrentTodos extends Vue {
 
     public remove(todo) {
         this.$store.dispatch("removeTodo", todo);
+    }
+
+    public generateTodos() {
+        this.$store.dispatch("getNewTodos");
     }
 
     get todos() {

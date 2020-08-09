@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -14,6 +15,8 @@ interface State {
     todos: Array<Todo>;
     newTodo: string;
 }
+
+const TODO_API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 export default new Vuex.Store<State>({
     state: {
@@ -36,7 +39,7 @@ export default new Vuex.Store<State>({
             const todos = state.todos;
             todos.splice(todos.indexOf(todo), 1);
             state.todos = todos;
-            state.newTodo = todo.body;
+            state.newTodo = todo.title;
         },
         REMOVE_TODO(state, todo) {
             const todos = state.todos;
@@ -48,8 +51,24 @@ export default new Vuex.Store<State>({
         CLEAR_TODO(state) {
             state.newTodo = "";
         },
+        ADD_NEW_TODOS(state, todos) {
+            state.todos.push(...todos);
+        },
     },
     actions: {
+        async getNewTodos({ commit }) {
+            const response = await axios.get(TODO_API_URL, {
+                params: {
+                    _limit: 20,
+                },
+            });
+            const newTodos = response.data.map(t => ({
+                id: t.id,
+                title: t.title,
+                completed: false,
+            }));
+            commit("ADD_NEW_TODOS", newTodos);
+        },
         getTodo({ commit }, todo) {
             commit("GET_TODO", todo);
         },
