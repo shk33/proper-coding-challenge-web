@@ -9,14 +9,12 @@ Vue.use(Vuex);
 interface State {
     loading: boolean;
     todos: Array<Todo>;
-    newTodo: string;
 }
 
 export default new Vuex.Store<State>({
     state: {
         loading: false,
         todos: [],
-        newTodo: "",
     },
     mutations: {
         LOADING_TASK(state) {
@@ -24,9 +22,6 @@ export default new Vuex.Store<State>({
         },
         COMPLETED_TASK(state) {
             state.loading = false;
-        },
-        GET_TODO(state, todo) {
-            state.newTodo = todo;
         },
         ADD_TODO(state, todo) {
             const { todos } = state;
@@ -58,9 +53,6 @@ export default new Vuex.Store<State>({
                 TodoService.saveTodosToLocalStorage(state.todos);
             }
         },
-        CLEAR_TODO(state) {
-            state.newTodo = "";
-        },
         ADD_NEW_TODOS(state, todos) {
             state.todos.push(...todos);
             TodoService.saveTodosToLocalStorage(state.todos);
@@ -79,14 +71,11 @@ export default new Vuex.Store<State>({
             commit("ADD_NEW_TODOS", newTodos);
             commit("COMPLETED_TASK");
         },
-        getTodo({ commit }, todo) {
-            commit("GET_TODO", todo);
-        },
-        async addTodo({ commit, state }) {
+        async addTodo({ commit }, title) {
             commit("LOADING_TASK");
             const newTodo = await TodoService.addTodo({
                 id: nanoid(),
-                title: state.newTodo,
+                title: title,
                 completed: false,
             });
             commit("ADD_TODO", newTodo);
@@ -115,7 +104,6 @@ export default new Vuex.Store<State>({
         },
     },
     getters: {
-        newTodo: state => state.newTodo,
         todos: state => state.todos.filter((todo) => { return !todo.completed; }),
         completedTodos: state => state.todos.filter((todo) => { return todo.completed; }),
     },

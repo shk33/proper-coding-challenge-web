@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <GetTodo></GetTodo>
+                    <AddTodo></AddTodo>
                 </div>
             </div>
             <div class="row">
@@ -32,13 +32,13 @@
 <script>
 import { Vue, Component } from "vue-property-decorator";
 import { State } from "vuex-class";
-import GetTodo from "../components/GetTodo.vue";
+import AddTodo from "../components/AddTodo.vue";
 import CurrentTodos from "../components/CurrentTodos.vue";
 import CompletedTodos from "../components/CompletedTodos.vue";
 
 @Component({
     components: {
-        GetTodo,
+        AddTodo,
         CurrentTodos,
         CompletedTodos,
     },
